@@ -30,12 +30,7 @@ class Stepper:
         computer -- string identifier for computer type
         """
         self.computer = computer
-        if self.computer == 'raspberry':
-            import RPi.GPIO as GPIO
-            GPIO.setmode(GPIO.BCM)
-        elif self.computer == 'beaglebone':
-            import Adafruit_BBIO.GPIO as GPIO
-        elif self.computer == 'nanopi':
+        if self.computer == 'nanopi':
             import RPi.GPIO as GPIO
         elif self.computer == 'pc-debug':
             print('stepper.py: Starting in PC debug mode, no stepper connected.')
