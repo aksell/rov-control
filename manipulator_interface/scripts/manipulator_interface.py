@@ -3,24 +3,16 @@
 from numpy import clip, interp
 import rospy
 
-from vortex_msgs.msg import Manipulator, Pwm
+from vortex_msgs.msg import Manipulatom
 from stepper import Stepper
 
 COMPUTER = rospy.get_param('/computer')
-
-SERVO_PWM_PIN = rospy.get_param('/pwm/pins/claw_servo')
-LOOKUP_POSITION = rospy.get_param('/servo/lookup/position')
-LOOKUP_PULSE_WIDTH = rospy.get_param('/servo/lookup/pulse_width')
 
 STEPPER_NUM_STEPS = rospy.get_param('/stepper/steps_per_rev')
 STEPPER_RPM = rospy.get_param('/stepper/default_speed_rpm')
 
 STEPPER_VALVE_PINS = rospy.get_param('/stepper/pins/valve')
 STEPPER_VALVE_ENABLE_PIN = rospy.get_param('/stepper/pins/valve_enable')
-
-STEPPER_AGAR_PINS = rospy.get_param('/stepper/pins/agar')
-STEPPER_AGAR_ENABLE_PIN = rospy.get_param('/stepper/pins/agar_enable')
-
 
 def servo_position_to_microsecs(thrust):
     return interp(thrust, LOOKUP_POSITION, LOOKUP_PULSE_WIDTH)
