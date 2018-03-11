@@ -35,6 +35,8 @@ class Stepper:
             GPIO.setmode(GPIO.BCM)
         elif self.computer == 'beaglebone':
             import Adafruit_BBIO.GPIO as GPIO
+        elif self.computer == 'nanopi':
+            import RPi.GPIO as GPIO
         elif self.computer == 'pc-debug':
             print('stepper.py: Starting in PC debug mode, no stepper connected.')
         else:
@@ -85,5 +87,8 @@ class Stepper:
 
     def shutdown(self):
         if self.computer == 'raspberry':
+            print('stepper.py: Shutting down and cleaning GPIO pins.')
+            self.GPIO.cleanup()
+        elif self.computer == 'nanopi'
             print('stepper.py: Shutting down and cleaning GPIO pins.')
             self.GPIO.cleanup()
