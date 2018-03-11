@@ -3,7 +3,7 @@
 from numpy import clip, interp
 import rospy
 
-from vortex_msgs.msg import Manipulatom
+from vortex_msgs.msg import Manipulator
 from stepper import Stepper
 
 COMPUTER = rospy.get_param('/computer')
@@ -11,8 +11,8 @@ COMPUTER = rospy.get_param('/computer')
 STEPPER_NUM_STEPS = rospy.get_param('/stepper/steps_per_rev')
 STEPPER_RPM = rospy.get_param('/stepper/default_speed_rpm')
 
-STEPPER_VALVE_PINS = rospy.get_param('/stepper/pins/valve')
-STEPPER_VALVE_ENABLE_PIN = rospy.get_param('/stepper/pins/valve_enable')
+STEPPERE_PINS = rospy.get_param('/stepper/pins/manipulator')
+STEPPER_ENABLE_PIN = rospy.get_param('/stepper/pins/manipulator_enable')
 
 def servo_position_to_microsecs(thrust):
     return interp(thrust, LOOKUP_POSITION, LOOKUP_PULSE_WIDTH)
