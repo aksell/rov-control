@@ -1,0 +1,7 @@
+stepper:
+  default_speed_rpm: 30
+  steps_per_rev: 200
+  pins:
+    manipulator: [21, 22, 23, 24]
+
+computer: 'nanopi'
