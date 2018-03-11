@@ -3,5 +3,6 @@ stepper:
   steps_per_rev: 200
   pins:
     manipulator: [21, 22, 23, 24]
+    manipulator_enable: [19]
 
 computer: 'nanopi'
