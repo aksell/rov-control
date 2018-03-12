@@ -84,6 +84,6 @@ class Stepper:
         if self.computer == 'raspberry':
             print('stepper.py: Shutting down and cleaning GPIO pins.')
             self.GPIO.cleanup()
-        elif self.computer == 'nanopi'
+        elif self.computer == 'nanopi':
             print('stepper.py: Shutting down and cleaning GPIO pins.')
             self.GPIO.cleanup()
