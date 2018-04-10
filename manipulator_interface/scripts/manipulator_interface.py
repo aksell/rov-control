@@ -11,13 +11,13 @@ COMPUTER = rospy.get_param('/computer')
 STEPPER_NUM_STEPS = rospy.get_param('/stepper/steps_per_rev')
 STEPPER_RPM = rospy.get_param('/stepper/default_speed_rpm')
 
-STEPPERE_PINS = rospy.get_param('/stepper/pins/manipulator')
+STEPPER_PINS = rospy.get_param('/stepper/pins/manipulator')
 STEPPER_ENABLE_PIN = rospy.get_param('/stepper/pins/manipulator_enable')
 
 
 def healthy_message(msg):
-    if abs(msg.valve_direction) > 1:
-        rospy.logwarn_throttle(1, 'Valve spinner command out of range. Ignoring message...')
+    if abs(msg.claw_direction) > 1:
+        rospy.logwarn_throttle(1, 'Claw spinner command out of range. Ignoring message...')
         return False
 
     if abs(msg.agar_direction) > 1:
@@ -31,17 +31,16 @@ class ManipulatorInterface(object):
     def __init__(self):
         self.is_initialized = False
         rospy.init_node('manipulator_interface', anonymous=False)
-        self.pub = rospy.Publisher('pwm', Pwm, queue_size=1)
         self.sub = rospy.Subscriber('manipulator_command', Manipulator, self.callback)
 
         rospy.on_shutdown(self.shutdown)
 
         try:
-            self.valve_stepper = Stepper(STEPPER_NUM_STEPS,
-                                         STEPPER_VALVE_PINS,
-                                         STEPPER_VALVE_ENABLE_PIN,
+            self.claw_stepper = Stepper(STEPPER_NUM_STEPS,
+                                         STEPPER_CLAW_PINS,
+                                         STEPPER_CLAW_ENABLE_PIN,
                                          COMPUTER)
-            self.valve_direction = 0
+            self.claw_direction = 0
 
             self.agar_stepper = Stepper(STEPPER_NUM_STEPS,
                                         STEPPER_AGAR_PINS,
@@ -53,7 +52,7 @@ class ManipulatorInterface(object):
                            'Shutting down node...')
             rospy.signal_shutdown('')
 
-        self.valve_stepper.disable()
+        self.claw_stepper.disable()
         self.agar_stepper.disable()
 
         rospy.loginfo('Initialized with {0} RPM steppers.'.format(STEPPER_RPM))
@@ -66,15 +65,15 @@ class ManipulatorInterface(object):
 
         while not rospy.is_shutdown():
             # Step steppers if nonzero direction
-            if abs(self.valve_direction) == 1:
-                self.valve_stepper.step_once(self.valve_direction)
+            if abs(self.claw_direction) == 1:
+                self.claw_stepper.step_once(self.claw_direction)
             if abs(self.agar_direction) == 1:
                 self.agar_stepper.step_once(self.agar_direction)
 
             rate.sleep()
 
     def shutdown(self):
-        self.valve_stepper.shutdown()
+        self.claw_stepper.shutdown()
 
     def callback(self, msg):
         if not self.is_initialized:
@@ -85,12 +84,12 @@ class ManipulatorInterface(object):
             return
 
 
-        if msg.valve_direction != self.valve_direction:
-            self.valve_direction = msg.valve_direction
-            if self.valve_direction == 0:
-                self.valve_stepper.disable()
+        if msg.claw_direction != self.claw_direction:
+            self.claw_direction = msg.claw_direction
+            if self.claw_direction == 0:
+                self.claw_stepper.disable()
             else:
-                self.valve_stepper.enable()
+                self.claw_stepper.enable()
 
         if msg.agar_direction != self.agar_direction:
             self.agar_direction = msg.agar_direction
