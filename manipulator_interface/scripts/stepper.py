@@ -46,6 +46,7 @@ class Stepper:
         self.pins = pins
         self.disable_pins = disable_pins
         if self.computer != 'pc-debug':
+            self.GPIO.setmode(GPIO.BOARD)
             for pin in pins:
                 self.GPIO.setup(pin, self.GPIO.OUT)
             for pin in disable_pins:
