@@ -78,14 +78,6 @@ class ManipulatorInterface(object):
             else:
                 self.claw_stepper.enable()
 
-        if msg.agar_direction != self.agar_direction:
-            self.agar_direction = msg.agar_direction
-            if self.agar_direction == 0:
-                self.agar_stepper.disable()
-            else:
-                self.agar_stepper.enable()
-
-
 if __name__ == '__main__':
     try:
         manipulator_interface = ManipulatorInterface()
