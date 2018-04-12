@@ -71,14 +71,14 @@ class Stepper:
 
     def enable(self):
         if self.computer != 'pc-debug':
-            for pin in disable_pins:
+            for pin in self.disable_pins:
                 self.GPIO.output(pin, self.GPIO.HIGH)
         else:
             print('Enabling stepper')
 
     def disable(self):
         if self.computer != 'pc-debug':
-            for pin in disable_pins:
+            for pin in self.disable_pins:
                 self.GPIO.output(pin, self.GPIO.LOW)
         else:
             print('Disabling stepper')
