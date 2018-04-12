@@ -12,7 +12,7 @@ STEPPER_NUM_STEPS = rospy.get_param('/stepper/steps_per_rev')
 STEPPER_RPM = rospy.get_param('/stepper/default_speed_rpm')
 
 STEPPER_CLAW_PINS = rospy.get_param('/stepper/pins/claw')
-STEPPER_CLAW_PIN = rospy.get_param('/stepper/pins/claw_pwm')
+STEPPER_CLAW_PWM_PINS = rospy.get_param('/stepper/pins/claw_pwm')
 
 
 def healthy_message(msg):
@@ -34,7 +34,7 @@ class ManipulatorInterface(object):
         try:
             self.claw_stepper = Stepper(STEPPER_NUM_STEPS,
                                          STEPPER_CLAW_PINS,
-                                         STEPPER_CLAW_ENABLE_PIN,
+                                         STEPPER_CLAW_PWM_PINS,
                                          COMPUTER)
             self.claw_direction = 0
         except NameError:
