@@ -11,17 +11,13 @@ COMPUTER = rospy.get_param('/computer')
 STEPPER_NUM_STEPS = rospy.get_param('/stepper/steps_per_rev')
 STEPPER_RPM = rospy.get_param('/stepper/default_speed_rpm')
 
-STEPPER_PINS = rospy.get_param('/stepper/pins/manipulator')
-STEPPER_ENABLE_PIN = rospy.get_param('/stepper/pins/manipulator_enable')
+STEPPER_CLAW_PINS = rospy.get_param('/stepper/pins/claw')
+STEPPER_CLAW_PIN = rospy.get_param('/stepper/pins/claw_pwm')
 
 
 def healthy_message(msg):
     if abs(msg.claw_direction) > 1:
         rospy.logwarn_throttle(1, 'Claw spinner command out of range. Ignoring message...')
-        return False
-
-    if abs(msg.agar_direction) > 1:
-        rospy.logwarn_throttle(1, 'Agar screwer command out of range. Ignoring message...')
         return False
 
     return True
@@ -41,19 +37,12 @@ class ManipulatorInterface(object):
                                          STEPPER_CLAW_ENABLE_PIN,
                                          COMPUTER)
             self.claw_direction = 0
-
-            self.agar_stepper = Stepper(STEPPER_NUM_STEPS,
-                                        STEPPER_AGAR_PINS,
-                                        STEPPER_AGAR_ENABLE_PIN,
-                                        COMPUTER)
-            self.agar_direction = 0
         except NameError:
             rospy.logfatal('Could not initialize stepper.py. Is /computer parameter set correctly? '
                            'Shutting down node...')
             rospy.signal_shutdown('')
 
         self.claw_stepper.disable()
-        self.agar_stepper.disable()
 
         rospy.loginfo('Initialized with {0} RPM steppers.'.format(STEPPER_RPM))
         self.is_initialized = True
@@ -67,8 +56,6 @@ class ManipulatorInterface(object):
             # Step steppers if nonzero direction
             if abs(self.claw_direction) == 1:
                 self.claw_stepper.step_once(self.claw_direction)
-            if abs(self.agar_direction) == 1:
-                self.agar_stepper.step_once(self.agar_direction)
 
             rate.sleep()
 
