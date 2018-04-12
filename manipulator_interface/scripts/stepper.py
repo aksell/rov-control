@@ -21,7 +21,7 @@ STEPPER_PIN_VALUES = [[1, 0, 1, 0],
 
 
 class Stepper:
-    def __init__(self, number_of_steps, pins, disable_pin, computer):
+    def __init__(self, number_of_steps, pins, disable_pins, computer):
         """"Initialize 4-pin stepper motor.
 
         number_of_steps -- number of steps per revolution
@@ -48,7 +48,8 @@ class Stepper:
         if self.computer != 'pc-debug':
             for pin in pins:
                 self.GPIO.setup(pin, self.GPIO.OUT)
-            self.GPIO.setup(disable_pin, self.GPIO.OUT)
+            for pin in disable_pins:
+                self.GPIO.setup(pin, self.GPIO.OUT)
 
     def step_once(self, direction):
         """"Step motor once in given direction."""
@@ -70,13 +71,15 @@ class Stepper:
 
     def enable(self):
         if self.computer != 'pc-debug':
-            self.GPIO.output(self.disable_pin, self.GPIO.LOW)
+            for pin in disable_pins:
+                self.GPIO.output(pin, self.GPIO.HIGH)
         else:
             print('Enabling stepper')
 
     def disable(self):
         if self.computer != 'pc-debug':
-            self.GPIO.output(self.disable_pin, self.GPIO.HIGH)
+            for pin in disable_pins:
+                self.GPIO.output(pin, self.GPIO.LOW)
         else:
             print('Disabling stepper')
 
