@@ -26,7 +26,7 @@ class Stepper:
 
         number_of_steps -- number of steps per revolution
         pins -- list of pin IDs for the stepper pins used (e.g. 'P9_01')
-        disable_pin -- pin ID for stepper disable pin (disabled when low)
+        disable_pins -- pin IDs for stepper PWM pins (disabled when low)
         computer -- string identifier for computer type
         """
         self.computer = computer
@@ -44,7 +44,7 @@ class Stepper:
         self.number_of_steps = number_of_steps
 
         self.pins = pins
-        self.disable_pin = disable_pin
+        self.disable_pins = disable_pins
         if self.computer != 'pc-debug':
             for pin in pins:
                 self.GPIO.setup(pin, self.GPIO.OUT)
