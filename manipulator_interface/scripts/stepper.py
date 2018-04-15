@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# This is a BeagleBone / ROS port of:
+# This is a nanopi neo 2+ / ROS port of:
 # Stepper.cpp - Stepper library for Wiring/Arduino - Version 1.1.0
 #
 # This library is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ class Stepper:
         self.computer = computer
         if self.computer == 'nanopi':
             import RPi.GPIO as GPIO
+            print('stepper.py: Starting in nanopi mode')
         elif self.computer == 'pc-debug':
             print('stepper.py: Starting in PC debug mode, no stepper connected.')
         else:
@@ -47,9 +48,9 @@ class Stepper:
         self.disable_pins = disable_pins
         if self.computer != 'pc-debug':
             self.GPIO.setmode(GPIO.BOARD)
-            for pin in pins:
+            for pin in self.pins:
                 self.GPIO.setup(pin, self.GPIO.OUT)
-            for pin in disable_pins:
+            for pin in self.disable_pins:
                 self.GPIO.setup(pin, self.GPIO.OUT)
 
     def step_once(self, direction):
@@ -85,9 +86,6 @@ class Stepper:
             print('Disabling stepper')
 
     def shutdown(self):
-        if self.computer == 'raspberry':
-            print('stepper.py: Shutting down and cleaning GPIO pins.')
-            self.GPIO.cleanup()
-        elif self.computer == 'nanopi':
+        if self.computer == 'nanopi':
             print('stepper.py: Shutting down and cleaning GPIO pins.')
             self.GPIO.cleanup()

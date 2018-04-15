@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from numpy import clip, interp
 import rospy
 
 from vortex_msgs.msg import Manipulator
@@ -60,6 +59,7 @@ class ManipulatorInterface(object):
             rate.sleep()
 
     def shutdown(self):
+
         self.claw_stepper.shutdown()
 
     def callback(self, msg):
@@ -69,7 +69,6 @@ class ManipulatorInterface(object):
 
         if not healthy_message(msg):
             return
-
 
         if msg.claw_direction != self.claw_direction:
             self.claw_direction = msg.claw_direction
