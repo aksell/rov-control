@@ -29,8 +29,6 @@
 #include <wiringPiI2C.h>
 
 
-// an MPU9250 object with its I2C address
-// of 0x68 (ADDR to GRND) and on Teensy bus 0
 MPU9250 IMU(0x68);
 
 float hx, hy, hz, t;
